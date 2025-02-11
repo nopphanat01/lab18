@@ -8,7 +8,10 @@
 using namespace std;
 
 struct student{
-
+    string name;
+    int id;
+    char gender;
+    float gpa;
     //Define struct student with four member (name ,id , gender, gpa);
     
 };
@@ -20,11 +23,11 @@ struct course{
 	vector<student *> student_list;
 };
 
-student * findstudent(vector<student> allstudents,int key){ //There is something wrong in this line.
+student * findstudent(vector<student> &allstudents,int key){ //There is something wrong in this line.
 	for(unsigned int i = 0; i < allstudents.size(); i++){
 		if(allstudents[i].id  == key) return &allstudents[i];
 	}
-	return 0;
+	return nullptr;
 }
 
 void printreport(vector<course> allcourses){
@@ -65,9 +68,9 @@ int main(){
 		student s; 
 		
 		//Use sscanf() to split the values in textline and assign those values to the members of struct s;
-                char name[100];
+        char name[100];
 		sscanf(textline.c_str(),"%[^,],%d,%c,%f",name,&s.id,&s.gender,&s.gpa);
-	        s.name = name;
+	    s.name = name;
 		allstudents.push_back(s); 		
 	}
 	
@@ -85,7 +88,7 @@ int main(){
 			if(textline == "> Students"){
 				state = 3;
 			}else{
-			
+			    allcourses.back().lecture_list.push_back(textline);
 			    //Append (push_back) textline to lecture_list[] of the recently added course in allcourses[];
 			    
 			}			
@@ -94,7 +97,8 @@ int main(){
 				state = 1;
 			}else{
 				student *p = findstudent(allstudents,atof(textline.c_str()));
-				
+				if(p) allcourses.back().student_list.push_back(p);
+            
 				//Append (push_back) p to student_list of the recently added course in allcourses[];
 				
 			}
@@ -102,4 +106,5 @@ int main(){
 	}
 	printreport(allcourses);
 	
+	return 0;
 }
